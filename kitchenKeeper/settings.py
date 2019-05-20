@@ -31,14 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'graphene_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'inventory.apps.InventoryConfig',
-    'rest_framework',
+    'inventory',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +50,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+GRAPHENE = {
+    'SCHEMA': 'kitchenKeeper.schema.schema'
+}
 
 ROOT_URLCONF = 'kitchenKeeper.urls'
 
@@ -77,8 +81,11 @@ WSGI_APPLICATION = 'kitchenKeeper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'NAME': 'kitchenKeeper',
+        'HOST': 'mongodb+srv://minji:Password2@cluster0-fkbsm.mongodb.net/test?retryWrites=true',
+        'USER': 'minji',
+        'PASSWORD': 'Password2',
     }
 }
 

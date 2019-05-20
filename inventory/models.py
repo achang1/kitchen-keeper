@@ -2,7 +2,11 @@ from django.db import models
 
 # Create your models here.
 
-class Storage(models.Model):
+class User(models.Model):
+    userName = models.CharField(max_length=100, unique=True)
+    email = models.CharField(max_length=100, unique=True)
+
+class Fridge(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
