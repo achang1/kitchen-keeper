@@ -1,0 +1,18 @@
+[
+    {
+        "model": "inventory.user",
+        "pk": 1,
+        "fields": {
+            "userName": "Bob",
+            "email": "bob@gmail.com"
+        }
+    },
+    {
+        "model": "inventory.user",
+        "pk": 2,
+        "fields": {
+            "userName": "Sammy",
+            "email": "sam@gmail.com"
+        }
+    }
+]
