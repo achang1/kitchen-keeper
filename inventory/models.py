@@ -20,7 +20,7 @@ class Category(models.Model):
         return self.name
 
 class Item(models.Model):
-    storage = models.ForeignKey(Storage, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     quantity = models.IntegerField('quantity', default=0)
