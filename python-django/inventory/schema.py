@@ -32,13 +32,13 @@ class Query(object):
 
     def resolve_user(self, info, **kwargs):
         id = kwargs.get('id')
-        userName = kwargs.get('userName')
+        user_name = kwargs.get('user_name')
         email = kwargs.get('email')
 
         if id is not None:
             return User.objects.get(pk=id)
-        if userName is not None:
-            return User.objects.get(userName=userName)
+        if user_name is not None:
+            return User.objects.get(user_name=user_name)
         if email is not None:
             return User.objects.get(email=email)
 
@@ -48,28 +48,13 @@ class Query(object):
 
 class UserInput(graphene.InputObjectType):  
     id = graphene.ID()
-    userName = graphene.String()
+    user_name = graphene.String()
     email = graphene.String()
+    first_name = graphene.String()
+    last_name = graphene.String()
 
 
 # Mutations for User
-
-
-# class UserMutation(graphene.Mutation):
-#     class Arguments:
-#         userName = graphene.String(required=True)
-#         email = graphene.String(required = True)
-#         id = graphene.Int(required=True)
-    
-#     user = graphene.Field(UserType)
-
-#     def mutate(self, info, userName, email, id):
-#         user = User.objects.get(pk=id)
-#         user.userName = userName
-#         user.email = email
-#         user.save()
-#         # Notice we return an instance of this mutation
-#         return UserMutation(user=user)
 
 class CreateUser(graphene.Mutation):  
     class Arguments:
@@ -81,7 +66,7 @@ class CreateUser(graphene.Mutation):
     @staticmethod
     def mutate(root, info, input=None):
         ok = True
-        user_instance = User(userName=input.userName, email=input.email)
+        user_instance = User(user_name=input.user_name, email=input.email, first_name=input.first_name, last_name=input.last_name)
         user_instance.save()
         return CreateUser(ok=ok, user=user_instance)
 
@@ -93,12 +78,12 @@ class UpdateUser(graphene.Mutation):
     ok = graphene.Boolean()
     user = graphene.Field(UserType)
 
-    def mutate(self, info, userName, email, id):
+    def mutate(self, info, user_name, email, id):
         ok = False
         user_instance = User.objects.get(pk=id)
         if user_instance:
             ok = True
-            user_instance.userName = userName
+            user_instance.user_name = user_name
             user_instance.email = email
             user_instance.save()
         return UpdateUser(ok=ok, user=None)

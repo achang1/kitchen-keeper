@@ -18,6 +18,8 @@ class HomePage extends Component {
                       id
                       userName
                       email
+                      firstName
+                      lastName
                     }
                   }
                     `
@@ -37,6 +39,8 @@ class HomePage extends Component {
                           id
                           userName
                           email
+                          firstName
+                          lastName
                         }
                     }
                         `
