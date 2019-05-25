@@ -80,13 +80,27 @@ WSGI_APPLICATION = 'kitchenKeeper.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
+    #### ATLAS MONGODB ####
+    # 'default': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'kitchenKeeper',
+    #     'HOST': 'mongodb+srv://minji:Password2@cluster0-fkbsm.mongodb.net/test?retryWrites=true',
+    #     'USER': 'minji',
+    #     'PASSWORD': 'Password2',
+    # }
+    #### CLEVER CLOUD MONGODB ####
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'kitchenKeeper',
-        'HOST': 'mongodb+srv://minji:Password2@cluster0-fkbsm.mongodb.net/test?retryWrites=true',
-        'USER': 'minji',
-        'PASSWORD': 'Password2',
+        'NAME': 'bspxn4bohzy2ozt',
+        'HOST': 'mongodb://ul6xybs2sxok7wwn7ca8:7n4mYPm7GIP0fakdhDjU@bspxn4bohzy2ozt-mongodb.services.clever-cloud.com:27017/bspxn4bohzy2ozt',
+        'USER': 'ul6xybs2sxok7wwn7ca8',
+        'PASSWORD': '7n4mYPm7GIP0fakdhDjU',
     }
+    #### SQLITE FOR TESTING ####
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
 
 
