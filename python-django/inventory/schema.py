@@ -1,18 +1,14 @@
 import graphene
 from graphene_django.types import DjangoObjectType
-from inventory.models import User, Fridge, Category, Item
+from inventory.models import User, Storage, Item
 
 class UserType(DjangoObjectType):
     class Meta:
         model = User
 
-class FridgeType(DjangoObjectType):
+class StorageType(DjangoObjectType):
     class Meta:
-        model = Fridge
-
-class CategoryType(DjangoObjectType):
-    class Meta:
-        model = Category
+        model = Storage
 
 class ItemType(DjangoObjectType):
     class Meta:
@@ -20,8 +16,7 @@ class ItemType(DjangoObjectType):
 
 class Query(object):
     all_users = graphene.List(UserType)
-    all_fridges = graphene.List(FridgeType)
-    all_categories = graphene.List(CategoryType)
+    all_storages = graphene.List(StorageType)
     all_items = graphene.List(ItemType)
 
     user = graphene.Field(UserType, id=graphene.Int())
@@ -29,8 +24,8 @@ class Query(object):
     def resolve_all_users(self, info, **kwargs):
         return User.objects.all()
 
-    def resolve_all_categories(self, info, **kwargs):
-        return Category.objects.all()
+    def resolve_all_storages(self, info, **kwargs):
+        return Storage.objects.all()
 
     def resolve_all_items(self, info, **kwargs):
         return Item.objects.all()
