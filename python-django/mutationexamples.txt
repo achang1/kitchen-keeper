@@ -1,0 +1,69 @@
+# Anonymous query of all users
+
+query {
+  allUsers {
+    id
+    userName
+    email
+    firstName
+    lastName
+  }
+}
+
+# Anonymous query of all users. Can query by id, user name or email
+
+query {
+  user(id:1){
+    userName
+    email
+    firstName
+    lastName
+  } 
+}
+
+
+# Create new user. userName and email have to be unique, otherwise will error
+# TODO: Handling of errorring input
+
+mutation createUser{
+  createUser(input: {
+    userName: "tom"
+    email: "tom@gmail.com"
+    firstName: "Tom"
+    lastName: "Hanks"
+    
+  }){
+    ok
+    user{
+      id
+      userName
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+
+# Update User. 
+# TODO: Right now we can only update user by id, should we also be able to update user by
+# retrieving username and email? If so, should they be allowed to update their username 
+# and email?
+
+mutation updateUser{
+  updateUser(id:1, input: {
+    email: "tomhanks@gmail.com"
+  }){
+    ok
+    user {
+      id
+      userName
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+
+
