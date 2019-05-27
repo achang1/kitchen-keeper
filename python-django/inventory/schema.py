@@ -20,6 +20,7 @@ class Query(object):
     all_items = graphene.List(ItemType)
 
     user = graphene.Field(UserType, id=graphene.Int(), user_name=graphene.String(), email=graphene.String())
+    storage = graphene.Field(StorageType, id=graphene.Int())
 
     def resolve_all_users(self, info, **kwargs):
         return User.objects.all()
@@ -37,9 +38,9 @@ class Query(object):
 
         if id is not None:
             return User.objects.get(pk=id)
-        if user_name is not None:
+        elif user_name is not None:
             return User.objects.get(user_name=user_name)
-        if email is not None:
+        elif email is not None:
             return User.objects.get(email=email)
         return None
 
@@ -129,11 +130,11 @@ class CreateStorage(graphene.Mutation):
         for user_input in input.users:
             # Retrieve user by id, email, or username, since these are unique
             if user_input.id:
-                user = User.oject.get(pk=user_input.id)
+                user = User.objects.get(pk=user_input.id)
             elif user_input.user_name:
-                user = User.object.get(user_name=user_input.user_name)
+                user = User.objects.get(user_name=user_input.user_name)
             elif user_input.email:
-                user = User.object.get(email=user_input.email)
+                user = User.objects.get(email=user_input.email)
             if user is None:
                 return CreateStorage(ok=False, storage=None)
             users.append(user)
@@ -154,25 +155,30 @@ class UpdateStorage(graphene.Mutation):
     @staticmethod
     def mutate(root, info, id, input=None):
         ok = False
-        storage_instance = Storage.object.get(pk=id)
+        storage_instance = Storage.objects.get(pk=id)
         if storage_instance:
             ok = True
             users = []
-            for user_input in input.users:
-                # Retrieve user by id, email, or username, since these are unique
-                if user_input.id:
-                    user = User.oject.get(pk=user_input.id)
-                elif user_input.user_name:
-                    user = User.object.get(user_name=user_input.user_name)
-                elif user_input.email:
-                    user = User.object.get(email=user_input.email)
-                if user is None:
-                    return UpdateStorage(ok=False, storage=None)
-                users.append(user)
-            storage_instance.name = input.name
-            storage_instance.storage_type = input.storage_type
+
+            if input.name:
+                storage_instance.name = input.name
+            if input.storage_type:
+                storage_instance.storage_type = input.storage_type
             storage_instance.save()
-            storage_instance.users.set(users)
+
+            if input.users:
+                for user_input in input.users:
+                    # Retrieve user by id, email, or username, since these are unique
+                    if user_input.id:
+                        user = User.objects.get(pk=user_input.id)
+                    elif user_input.user_name:
+                        user = User.objects.get(user_name=user_input.user_name)
+                    elif user_input.email:
+                        user = User.objects.get(email=user_input.email)
+                    if user is None:
+                        return UpdateStorage(ok=False, storage=None)
+                    users.append(user)
+                storage_instance.users.set(users)
             return UpdateStorage(ok=ok, storage=storage_instance)
         return UpdateStorage(ok=ok, storage=None)
 

@@ -14,7 +14,7 @@ class User(models.Model):
 class Storage(models.Model):
     name = models.CharField(max_length=100, unique=True)
     storage_type = models.CharField(max_length=50)
-    user = models.ManyToManyField(User)
+    users = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name

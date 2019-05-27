@@ -1,4 +1,6 @@
-# Anonymous query of all users
+###### USERS ######
+
+# Anonymous query of all users.
 
 query {
   allUsers {
@@ -10,7 +12,7 @@ query {
   }
 }
 
-# Anonymous query of all users. Can query by id, user name or email
+# Anonymous query of a single user. Can be queried by id, user name or email.
 
 query {
   user(id:1){
@@ -20,7 +22,6 @@ query {
     lastName
   } 
 }
-
 
 # Create new user. userName and email have to be unique, otherwise will error
 # TODO: Handling of errorring input
@@ -44,7 +45,6 @@ mutation createUser{
   }
 }
 
-
 # Update User. 
 # TODO: Right now we can only update user by id, should we also be able to update user by
 # retrieving username and email? If so, should they be allowed to update their username 
@@ -65,5 +65,91 @@ mutation updateUser{
   }
 }
 
+
+##### STORAGE #####
+
+# Anonymous query of all storages
+
+query{
+  allStorages {
+    name
+    id
+    storageType
+    users {
+      userName
+      email
+    }
+  }
+}
+
+# Anonymous query of a single storage, specified by id.
+query {
+  storage (id: 2) {
+    name
+    storageType
+    users {
+      userName
+      id
+    }
+  }
+}
+
+# Create storage. The users can be specified by id, email or name.
+
+mutation createStorage{
+  createStorage (input: {
+    name: "Chris's kitchen fridge"
+    storageType: "fridge"
+    users: [
+      {
+        id: 2
+      }
+      {
+        email: "chrish@gmail.com"
+      }
+    ]
+  }){
+    ok
+    storage{
+      id
+      name
+      storageType
+      users {
+        id
+        userName
+      }
+    }
+  }
+}
+
+# Update storage.
+
+mutation updateStorage {
+  updateStorage (id: 2, input: {
+    users: [
+      {
+        id: 2
+      }
+      {
+        id:3
+      }
+      {
+        email: "rdj@gmail.com"
+      }
+    ]})
+  {
+    ok
+    storage {
+      id
+      name
+      storageType
+      users {
+        id
+        userName
+        email
+      }
+    }
+  }
+}
 
 
