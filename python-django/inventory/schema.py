@@ -113,6 +113,23 @@ class UpdateUser(graphene.Mutation):
             return UpdateUser(ok=ok, user=user_instance)
         return UpdateUser(ok=ok, user=None)
 
+class DeleteUser(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    ok = graphene.Boolean()
+    user = graphene.Field(UserType)
+
+    @staticmethod
+    def mutate(self, info, id):
+        ok = False
+
+        user_instance = User.objects.get(pk=id)
+        if user_instance:
+            ok = True
+            user_instance.delete()
+        return DeleteUser(ok=ok)
+
 
 # Mutations for Storage
 class CreateStorage(graphene.Mutation):
@@ -183,8 +200,27 @@ class UpdateStorage(graphene.Mutation):
         return UpdateStorage(ok=ok, storage=None)
 
 
+class DeleteStorage(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+
+    ok = graphene.Boolean()
+    storage = graphene.Field(StorageType)
+
+    @staticmethod
+    def mutate(root, info, id):
+        ok = False
+        storage_instance = Storage.objects.get(pk=id)
+        if storage_instance:
+            ok = True
+            storage_instance.delete()
+        return DeleteStorage(ok=ok)
+
+
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     update_user = UpdateUser.Field()
+    delete_user = DeleteUser.Field()
     create_storage = CreateStorage.Field()
     update_storage = UpdateStorage.Field()
+    delete_storage = DeleteStorage.Field()

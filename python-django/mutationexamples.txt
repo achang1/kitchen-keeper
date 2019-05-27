@@ -65,6 +65,16 @@ mutation updateUser{
   }
 }
 
+# Delete User.
+# TODO: If there is a storage that only has this user, it should be deleted as well.
+# Currently, the storage will be updated to have 0 users.
+
+mutation deleteUser {
+  deleteUser(id: 7) {
+    ok
+  }
+}
+
 
 ##### STORAGE #####
 
@@ -152,4 +162,10 @@ mutation updateStorage {
   }
 }
 
+# Delete Storage.
 
+mutation deleteStorage {
+  deleteStorage (id: 3) {
+    ok
+  }
+}
