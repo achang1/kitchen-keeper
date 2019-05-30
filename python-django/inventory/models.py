@@ -20,7 +20,7 @@ class Storage(models.Model):
         return self.name
 
 class Item(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     storage = models.ForeignKey(Storage, on_delete=models.CASCADE)
     category = models.CharField(max_length=100)
