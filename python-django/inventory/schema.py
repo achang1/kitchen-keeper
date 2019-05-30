@@ -2,25 +2,34 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from inventory.models import User, Storage, Item
 
+
 class UserType(DjangoObjectType):
     class Meta:
         model = User
+
 
 class StorageType(DjangoObjectType):
     class Meta:
         model = Storage
 
+
 class ItemType(DjangoObjectType):
     class Meta:
         model = Item
+
 
 class Query(object):
     all_users = graphene.List(UserType)
     all_storages = graphene.List(StorageType)
     all_items = graphene.List(ItemType)
 
-    user = graphene.Field(UserType, id=graphene.Int(), user_name=graphene.String(), email=graphene.String())
+    user = graphene.Field(UserType, id=graphene.Int(),
+                          user_name=graphene.String(), email=graphene.String())
     storage = graphene.Field(StorageType, id=graphene.Int())
+    item = graphene.Field(ItemType, id=graphene.Int(), name=graphene.String(),
+                          category=graphene.String(), quantity=graphene.Int(),
+                          purchase_date=graphene.DateTime(), expiry_date=graphene.DateTime(), 
+                          perishable=graphene.Boolean())
 
     def resolve_all_users(self, info, **kwargs):
         return User.objects.all()
@@ -51,9 +60,32 @@ class Query(object):
             return Storage.objects.get(pk=id)
         return None
 
+# TODO: add user field to filter by username or email
+    def resolve_item(self, info, **kwargs):
+        id = kwargs.get('id')
+        name = kwargs.get('name')
+        category = kwargs.get('category')
+        purchase_date = kwargs.get('purchase_date')
+        expiry_date = kwargs.get('expiry_date')
+        perishable = kwargs.get('perishable')
+
+        if id is not None:
+            return Item.objects.get(pk=id)
+        elif name is not None:
+            return Item.objects.get(name=name)
+        elif category is not None:
+            return Item.objects.get(category=category)
+        elif purchase_date is not None:
+            return Item.objects.get(purchase_date=purchase_date)
+        elif expiry_date is not None:
+            return Item.objects.get(expiry_date=expiry_date)
+        elif perishable is not None:
+            return Item.objects.get(perishable=perishable)
+        return None
+
 # Input Object Types
 
-class UserInput(graphene.InputObjectType):  
+class UserInput(graphene.InputObjectType):
     id = graphene.ID()
     user_name = graphene.String()
     email = graphene.String()
@@ -66,10 +98,18 @@ class StorageInput(graphene.InputObjectType):
     storage_type = graphene.String()
     users = graphene.List(UserInput)
 
+class ItemInput(graphene.InputObjectType):
+    id = graphene.ID()
+    name = graphene.String()
+    storage = graphene.ID(StorageInput)
+    category = graphene.String()
+    quantity = graphene.Int()
+    purchase_date = graphene.DateTime()
+    expiry_date = graphene.DateTime()
 
 # Mutations for User
 
-class CreateUser(graphene.Mutation):  
+class CreateUser(graphene.Mutation):
     class Arguments:
         input = UserInput(required=True)
 
@@ -79,15 +119,17 @@ class CreateUser(graphene.Mutation):
     @staticmethod
     def mutate(root, info, input=None):
         ok = True
-        user_instance = User(user_name=input.user_name, email=input.email, first_name=input.first_name, last_name=input.last_name)
+        user_instance = User(user_name=input.user_name, email=input.email,
+                             first_name=input.first_name, last_name=input.last_name)
         user_instance.save()
         return CreateUser(ok=ok, user=user_instance)
+
 
 class UpdateUser(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         input = UserInput(required=True)
-    
+
     ok = graphene.Boolean()
     user = graphene.Field(UserType)
 
@@ -112,6 +154,7 @@ class UpdateUser(graphene.Mutation):
             user_instance.save()
             return UpdateUser(ok=ok, user=user_instance)
         return UpdateUser(ok=ok, user=None)
+
 
 class DeleteUser(graphene.Mutation):
     class Arguments:
@@ -155,7 +198,8 @@ class CreateStorage(graphene.Mutation):
             if user is None:
                 return CreateStorage(ok=False, storage=None)
             users.append(user)
-        storage_instance = Storage(name=input.name, storage_type=input.storage_type)
+        storage_instance = Storage(
+            name=input.name, storage_type=input.storage_type)
         storage_instance.save()
         storage_instance.users.set(users)
         return CreateStorage(ok=ok, storage=storage_instance)
@@ -216,6 +260,14 @@ class DeleteStorage(graphene.Mutation):
             storage_instance.delete()
         return DeleteStorage(ok=ok)
 
+class CreateItem(graphene.Mutation):
+    pass
+
+class UpdateItem(graphene.Mutation):
+    pass
+
+class DeleteItem(graphene.Mutation):
+    pass
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
@@ -224,3 +276,6 @@ class Mutation(graphene.ObjectType):
     create_storage = CreateStorage.Field()
     update_storage = UpdateStorage.Field()
     delete_storage = DeleteStorage.Field()
+    create_item = CreateItem.Field()
+    update_item = UpdateItem.Field()
+    delete_item = DeleteItem.Field()
