@@ -15,21 +15,12 @@ class ItemType(DjangoObjectType):
         model = Item
 
 class Query(object):
+    # User queries
     all_users = graphene.List(UserType)
-    all_storages = graphene.List(StorageType)
-    all_items = graphene.List(ItemType)
-
     user = graphene.Field(UserType, id=graphene.Int(), user_name=graphene.String(), email=graphene.String())
-    storage = graphene.Field(StorageType, id=graphene.Int())
 
     def resolve_all_users(self, info, **kwargs):
         return User.objects.all()
-
-    def resolve_all_storages(self, info, **kwargs):
-        return Storage.objects.all()
-
-    def resolve_all_items(self, info, **kwargs):
-        return Item.objects.all()
 
     def resolve_user(self, info, **kwargs):
         id = kwargs.get('id')
@@ -44,12 +35,35 @@ class Query(object):
             return User.objects.get(email=email)
         return None
 
+    # Storage queries
+    all_storages = graphene.List(StorageType)
+    storage = graphene.Field(StorageType, id=graphene.Int())
+    storages = graphene.List(StorageType, storage_type=graphene.String())
+
+    def resolve_all_storages(self, info, **kwargs):
+        return Storage.objects.all()
+
     def resolve_storage(self, info, **kwargs):
         id = kwargs.get('id')
 
         if id is not None:
             return Storage.objects.get(pk=id)
         return None
+
+    def resolve_storages(self, info, **kwargs):
+        storage_type = kwargs.get('storage_type')
+
+        if storage_type is not None:
+            return Storage.objects.filter(storage_type=storage_type)
+        return None
+
+
+    # Item queries
+    all_items = graphene.List(ItemType)
+
+    def resolve_all_items(self, info, **kwargs):
+        return Item.objects.all()
+
 
 # Input Object Types
 
