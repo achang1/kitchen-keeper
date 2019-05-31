@@ -104,6 +104,18 @@ query {
   }
 }
 
+# Anonymous query of storages with a specific storage type
+query {
+  storages (storageType: “fridge”) {
+    name
+    storageType
+    users {
+      userName
+      id
+    }
+  }
+}
+
 # Create storage. The users can be specified by id, email or name.
 
 mutation createStorage{
