@@ -3,7 +3,7 @@
         "model": "inventory.user",
         "pk": 1,
         "fields": {
-            "userName": "Bob",
+            "user_name": "Bob",
             "email": "bob@gmail.com"
         }
     },
@@ -11,8 +11,58 @@
         "model": "inventory.user",
         "pk": 2,
         "fields": {
-            "userName": "Sammy",
+            "user_name": "Sammy",
             "email": "sam@gmail.com"
+        }
+    },
+    {
+        "model": "inventory.storage",
+        "pk": 1,
+        "fields": {
+            "name": "Bob & Sammy's fridge",
+            "storage_type": "Fridge",
+            "users": [1, 2]
+        }
+    },
+    {
+        "model": "inventory.storage",
+        "pk": 2,
+        "fields": {
+            "name": "Sammy's pantry",
+            "storage_type": "Pantry",
+            "users": [2]
+        }
+    },
+    {
+        "model": "inventory.item",
+        "pk": 1,
+        "fields": {
+            "name": "apple",
+            "user": 1,
+            "storage": 1,
+            "category": "Fruits & Veggies",
+            "quantity": 3,
+            "purchase_date": "2019-05-20",
+<<<<<<< HEAD
+            "expiry_date": "2019-05-21",
+=======
+            "expiry_date": "",
+>>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
+            "perishable": "True"
+        }
+    },
+    {
+        "model": "inventory.item",
+        "pk": 2,
+        "fields": {
+            "name": "cookies",
+            "user": 2,
+            "storage": 2,
+            "category": "Snacks",
+            "quantity": 3,
+            "purchase_date": "2019-05-20",
+            "expiry_date": "2019-09-20",
+            "perishable": "True"
         }
     }
 ]

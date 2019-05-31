@@ -181,3 +181,143 @@ mutation deleteStorage {
     ok
   }
 }
+
+###### ITEMS ######
+
+# Anonymous query of all items.
+# TODO: handle error when expiryDate is null
+
+query{
+  allItems {
+    name
+    user {
+      id
+    }
+    storage {
+      id
+    }
+    category
+    quantity
+    purchaseDate
+    expiryDate
+    perishable
+  }
+}
+
+# Find by username, email, category, expiry date, perishable
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+# TODO: need to handle error when more than 1 item returned.
+# TODO: filter via username, email
+>>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
+=======
+# TODO: need to handle error when more than 1 item returned.
+# TODO: filter via username, email
+>>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
+
+query{
+  item(category: "Fruits & Veggies") {
+    name
+  }
+}
+
+query{
+<<<<<<< HEAD
+<<<<<<< HEAD
+  item(user: {
+    userName: "Bob"
+  }) {
+    name
+  }
+}
+
+mutation createItem{
+  createItem (input: {
+    name: "Milk"
+    user: {
+      id: 1
+    }
+    storage: {
+      id: 2
+    }
+    category: "Dairy"
+    quantity: 3
+    purchaseDate: "2017-10-06T14:54:54+00:00"
+    expiryDate: "2017-10-09T14:54:54+00:00"
+    perishable: true
+  })
+  {
+    ok
+    item{
+      id
+      name
+      user {
+        id
+        userName
+        email
+      }
+      storage {
+        id
+      }
+      category
+      quantity
+      purchaseDate
+      expiryDate
+      perishable
+    }
+  }
+}
+
+mutation updateItem{
+  updateItem (id: 2, input: {
+    name: "Tomato"
+    user: {
+      id: 2
+    }
+    storage: {
+      id: 2
+    }
+    category: "Fruits & Veggies"
+    quantity: 3
+    purchaseDate: "2017-10-06T14:54:54+00:00"
+    expiryDate: "2017-10-09T14:54:54+00:00"
+    perishable: true
+  })
+  {
+    ok
+    item{
+      id
+      name
+      user {
+        id
+        userName
+        email
+      }
+      storage {
+        id
+      }
+      category
+      quantity
+      purchaseDate
+      expiryDate
+      perishable
+    }
+  }
+}
+
+mutation deleteItem{
+  deleteItem (id: 2) {
+    ok
+  }
+=======
+  item(perishable: true) {
+    name
+  }
+>>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
+=======
+  item(perishable: true) {
+    name
+  }
+>>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
+}
