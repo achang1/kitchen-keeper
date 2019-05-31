@@ -43,7 +43,11 @@
             "category": "Fruits & Veggies",
             "quantity": 3,
             "purchase_date": "2019-05-20",
+<<<<<<< HEAD
             "expiry_date": "2019-05-21",
+=======
+            "expiry_date": "",
+>>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
             "perishable": "True"
         }
     },

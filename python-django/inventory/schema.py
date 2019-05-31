@@ -18,7 +18,6 @@ class ItemType(DjangoObjectType):
         model = Item
 
 
-<<<<<<< HEAD
 # Input Object Types
 
 class UserInput(graphene.InputObjectType):
@@ -48,26 +47,16 @@ class ItemInput(graphene.InputObjectType):
 
 # Queries
 
-=======
->>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
 class Query(object):
     all_users = graphene.List(UserType)
     all_storages = graphene.List(StorageType)
     all_items = graphene.List(ItemType)
 
-    user = graphene.Field(UserType, id=graphene.Int(),
-                          user_name=graphene.String(), email=graphene.String())
+    user = graphene.Field(UserType, id=graphene.Int(), user_name=graphene.String(), email=graphene.String())
     storage = graphene.Field(StorageType, id=graphene.Int())
-<<<<<<< HEAD
     item = graphene.List(ItemType, id=graphene.Int(), name=graphene.String(), user=graphene.Argument(UserInput),
                           storage=graphene.Argument(StorageInput), category=graphene.String(), quantity=graphene.Int(), 
                           purchase_date=graphene.DateTime(), expiry_date=graphene.DateTime(), perishable=graphene.Boolean())
-=======
-    item = graphene.Field(ItemType, id=graphene.Int(), name=graphene.String(),
-                          category=graphene.String(), quantity=graphene.Int(),
-                          purchase_date=graphene.DateTime(), expiry_date=graphene.DateTime(), 
-                          perishable=graphene.Boolean())
->>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
 
     def resolve_all_users(self, info, **kwargs):
         return User.objects.all()
@@ -289,15 +278,6 @@ class DeleteStorage(graphene.Mutation):
             ok = True
             storage_instance.delete()
         return DeleteStorage(ok=ok)
-
-class CreateItem(graphene.Mutation):
-    pass
-
-class UpdateItem(graphene.Mutation):
-    pass
-
-class DeleteItem(graphene.Mutation):
-    pass
 
 class CreateItem(graphene.Mutation):
     class Arguments:
