@@ -106,7 +106,7 @@ query {
 
 # Anonymous query of storages with a specific storage type
 query {
-  storages (storageType: “fridge”) {
+  storages (storageType: "Fridge") {
     name
     storageType
     users {
@@ -121,7 +121,7 @@ query {
 mutation createStorage{
   createStorage (input: {
     name: "Chris's kitchen fridge"
-    storageType: "fridge"
+    storageType: "Fridge"
     users: [
       {
         id: 2
