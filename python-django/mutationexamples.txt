@@ -205,16 +205,6 @@ query{
 }
 
 # Find by username, email, category, expiry date, perishable
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-# TODO: need to handle error when more than 1 item returned.
-# TODO: filter via username, email
->>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
-=======
-# TODO: need to handle error when more than 1 item returned.
-# TODO: filter via username, email
->>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
 
 query{
   item(category: "Fruits & Veggies") {
@@ -223,8 +213,6 @@ query{
 }
 
 query{
-<<<<<<< HEAD
-<<<<<<< HEAD
   item(user: {
     userName: "Bob"
   }) {
@@ -310,14 +298,4 @@ mutation deleteItem{
   deleteItem (id: 2) {
     ok
   }
-=======
-  item(perishable: true) {
-    name
-  }
->>>>>>> b9f75a0f... wip adding queries to Item and sample data and usages
-=======
-  item(perishable: true) {
-    name
-  }
->>>>>>> b9f75a0f13ad99f49403d30799d5de50bc1e65d4
 }

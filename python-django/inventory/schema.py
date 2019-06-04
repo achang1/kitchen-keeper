@@ -130,14 +130,6 @@ class Query(object):
             return Item.objects.get(perishable=perishable)
         return None
 
-class ItemInput(graphene.InputObjectType):
-    id = graphene.ID()
-    name = graphene.String()
-    storage = graphene.ID(StorageInput)
-    category = graphene.String()
-    quantity = graphene.Int()
-    purchase_date = graphene.DateTime()
-    expiry_date = graphene.DateTime()
 
 # Mutations for User
 
