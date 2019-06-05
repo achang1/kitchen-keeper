@@ -1,6 +1,7 @@
 import graphene
 from inventory.models import Item, Storage, User
 from inventory.operations.object_types import ItemType, ItemInput, StorageInput, UserInput
+from django.http import HttpResponseNotFound
 
 class Query(graphene.ObjectType):
     all_items = graphene.List(ItemType)
@@ -14,8 +15,6 @@ class Query(graphene.ObjectType):
     def resolve_item(self, info, user=None, **kwargs):
         id = kwargs.get('id')
         name = kwargs.get('name')
-        user_name = user.user_name
-        user_email = user.email
         category = kwargs.get('category')
         purchase_date = kwargs.get('purchase_date')
         expiry_date = kwargs.get('expiry_date')
@@ -24,21 +23,24 @@ class Query(graphene.ObjectType):
         if id is not None:
             return Item.objects.get(pk=id)
         elif name is not None:
-            return Item.objects.get(name=name)
-        elif user_name is not None:
-            user = User.objects.get(user_name=user_name)
-            return Item.objects.filter(user=user)
-        elif user_email is not None:
-            user = User.objects.get(user_email=user_email)
-            return Item.objects.filter(user=user)
+            return Item.objects.filter(name=name)
+        elif user is not None:
+            try:
+                if user.user_name is not None:
+                    user = User.objects.get(user_name=user.user_name)
+                else:
+                    user = User.objects.get(email=user.email)
+                return Item.objects.filter(user=user)
+            except Exception as e:
+                return HttpResponseNotFound("User does not exist.")
         elif category is not None:
-            return Item.objects.get(category=category)
+            return Item.objects.filter(category=category)
         elif purchase_date is not None:
-            return Item.objects.get(purchase_date=purchase_date)
+            return Item.objects.filter(purchase_date=purchase_date)
         elif expiry_date is not None:
-            return Item.objects.get(expiry_date=expiry_date)
+            return Item.objects.filter(expiry_date=expiry_date)
         elif perishable is not None:
-            return Item.objects.get(perishable=perishable)
+            return Item.objects.filter(perishable=perishable)
         return None
 
 
