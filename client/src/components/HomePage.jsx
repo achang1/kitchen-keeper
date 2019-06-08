@@ -10,14 +10,24 @@ class HomePage extends Component {
     render() {
         return (
             <Fragment>
-                {/* <button
-                    onClick={() => this.fetchUsers()}>
-                    GET Users
-                </button>
-                <button
-                    onClick={() => this.fetchStorages()}>
-                    Get Storages
-                </button> */}
+                <ul>
+                    {this.props.allUsers.map(user => {
+                        return (
+                            <li key={user.id}>
+                                {user.userName}
+                            </li>
+                        )
+                    })}
+                </ul>
+                <ul>
+                    {this.props.allStorages.map(storage => {
+                        return (
+                            <li key={storage.id}>
+                                {storage.storageType}
+                            </li>
+                        )
+                    })}
+                </ul>
             </Fragment>
         )
     }
@@ -26,7 +36,8 @@ class HomePage extends Component {
 const mapStateToProps = state => {
     console.log(state);
     return {
-      allUsers: state.allUsers
+      allUsers: state.allUsers,
+      allStorages: state.allStorages
     }
 };
 

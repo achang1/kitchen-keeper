@@ -1,7 +1,9 @@
 import {INIT_HOMEPAGE} from "../constants/action-types";
 import {client} from "../utils/API";
-import {allUsersQuery} from "../constants/gql-queries/index";
-import {allStoragesQuery} from "../constants/gql-queries/index";
+import {
+    allUsersQuery,
+    allStoragesQuery
+} from "../constants/gql-queries/index";
 
 export async function initializeHomePage(dispatch) {
     const allUsersData = await client.query({
