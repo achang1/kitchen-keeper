@@ -8,6 +8,6 @@ function App() {
       <HomePage />
     </Fragment>
   );
-}
+  }
 
 export default App;

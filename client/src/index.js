@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from "react-redux";
+import store from "./store/index";
 import './styles/index.css';
 import App from './components/App';
 import {ApolloProvider} from "react-apollo";
@@ -7,9 +9,11 @@ import * as serviceWorker from './serviceWorker';
 import {client} from "./utils/API";
 
 ReactDOM.render(
-    <ApolloProvider client={client}>
-        <App />
-    </ApolloProvider>,
+    <Provider store={store}>
+        <ApolloProvider client={client}>
+            <App />
+        </ApolloProvider>
+    </Provider>,
     document.getElementById('root')
 );
 
