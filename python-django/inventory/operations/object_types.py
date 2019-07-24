@@ -1,6 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
-from inventory.models import User, Storage, Item
+from inventory.models import User, Item
 
 
 class UserType(DjangoObjectType):
@@ -14,16 +14,6 @@ class UserInput(graphene.InputObjectType):
     first_name = graphene.String()
     last_name = graphene.String()
 
-class StorageType(DjangoObjectType):
-    class Meta:
-        model = Storage
-
-class StorageInput(graphene.InputObjectType):
-    id = graphene.ID()
-    name = graphene.String()
-    storage_type = graphene.String()
-    users = graphene.List(UserInput)
-
 class ItemType(DjangoObjectType):
     class Meta:
         model = Item
@@ -32,7 +22,6 @@ class ItemInput(graphene.InputObjectType):
     id = graphene.ID()
     name = graphene.String()
     user = graphene.Field(UserInput)
-    storage = graphene.Field(StorageInput)
     category = graphene.String()
     quantity = graphene.Int()
     purchase_date = graphene.DateTime()

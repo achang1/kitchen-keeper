@@ -1,5 +1,5 @@
 from django.test import TestCase
-from inventory.models import User, Storage, Item
+from inventory.models import User, Item
 
 
 class UserTests(TestCase):
@@ -8,11 +8,6 @@ class UserTests(TestCase):
     
     def testStringOverrride(self):
         self.assertEquals(str(self.testUser), "jjames")
-
-
-class StorageTests(TestCase):
-    def setUp(self):
-        pass
 
 
 class ItemTests(TestCase):

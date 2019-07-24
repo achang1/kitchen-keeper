@@ -66,118 +66,9 @@ mutation updateUser{
 }
 
 # Delete User.
-# TODO: If there is a storage that only has this user, it should be deleted as well.
-# Currently, the storage will be updated to have 0 users.
 
 mutation deleteUser {
   deleteUser(id: 7) {
-    ok
-  }
-}
-
-
-##### STORAGE #####
-
-# Anonymous query of all storages
-
-query{
-  allStorages {
-    name
-    id
-    storageType
-    users {
-      userName
-      email
-    }
-  }
-}
-
-# Anonymous query of a single storage, specified by id.
-query {
-  storage (id: 2) {
-    name
-    storageType
-    users {
-      userName
-      id
-    }
-  }
-}
-
-# Anonymous query of storages with a specific storage type
-query {
-  storages (storageType: "Fridge") {
-    name
-    storageType
-    users {
-      userName
-      id
-    }
-  }
-}
-
-# Create storage. The users can be specified by id, email or name.
-
-mutation createStorage{
-  createStorage (input: {
-    name: "Chris's kitchen fridge"
-    storageType: "Fridge"
-    users: [
-      {
-        id: 2
-      }
-      {
-        email: "chrish@gmail.com"
-      }
-    ]
-  }){
-    ok
-    storage{
-      id
-      name
-      storageType
-      users {
-        id
-        userName
-      }
-    }
-  }
-}
-
-# Update storage.
-
-mutation updateStorage {
-  updateStorage (id: 2, input: {
-    users: [
-      {
-        id: 2
-      }
-      {
-        id:3
-      }
-      {
-        email: "rdj@gmail.com"
-      }
-    ]})
-  {
-    ok
-    storage {
-      id
-      name
-      storageType
-      users {
-        id
-        userName
-        email
-      }
-    }
-  }
-}
-
-# Delete Storage.
-
-mutation deleteStorage {
-  deleteStorage (id: 3) {
     ok
   }
 }
@@ -191,9 +82,6 @@ query{
   allItems {
     name
     user {
-      id
-    }
-    storage {
       id
     }
     category
@@ -226,9 +114,6 @@ mutation createItem{
     user: {
       id: 1
     }
-    storage: {
-      id: 2
-    }
     category: "Dairy"
     quantity: 3
     purchaseDate: "2017-10-06T14:54:54+00:00"
@@ -245,9 +130,6 @@ mutation createItem{
         userName
         email
       }
-      storage {
-        id
-      }
       category
       quantity
       purchaseDate
@@ -261,9 +143,6 @@ mutation updateItem{
   updateItem (id: 2, input: {
     name: "Tomato"
     user: {
-      id: 2
-    }
-    storage: {
       id: 2
     }
     category: "Fruits & Veggies"
@@ -281,9 +160,6 @@ mutation updateItem{
         id
         userName
         email
-      }
-      storage {
-        id
       }
       category
       quantity

@@ -1,13 +1,13 @@
 import graphene
-from inventory.models import Item, Storage, User
-from inventory.operations.object_types import ItemType, ItemInput, StorageInput, UserInput
+from inventory.models import Item, User
+from inventory.operations.object_types import ItemType, ItemInput, UserInput
 from django.http import HttpResponseNotFound
 
 class Query(graphene.ObjectType):
     all_items = graphene.List(ItemType)
     item = graphene.List(ItemType, id=graphene.Int(), name=graphene.String(), user=graphene.Argument(UserInput),
-                          storage=graphene.Argument(StorageInput), category=graphene.String(), quantity=graphene.Int(), 
-                          purchase_date=graphene.DateTime(), expiry_date=graphene.DateTime(), perishable=graphene.Boolean())
+                          category=graphene.String(), quantity=graphene.Int(), purchase_date=graphene.DateTime(), 
+                          expiry_date=graphene.DateTime(), perishable=graphene.Boolean())
 
     def resolve_all_items(self, info, **kwargs):
         return Item.objects.all()
@@ -56,8 +56,7 @@ class CreateItem(graphene.Mutation):
         ok = True
 
         user = User.objects.get(pk=input.user.id)
-        storage = Storage.objects.get(pk=input.storage.id)
-        item_instance = Item(name=input.name, user=user, storage=storage, category=input.category,
+        item_instance = Item(name=input.name, user=user, category=input.category,
                              quantity=input.quantity, purchase_date=input.purchase_date, expiry_date=input.expiry_date, perishable=input.perishable)
         item_instance.save()
         return CreateItem(ok=ok, item=item_instance)
@@ -75,7 +74,6 @@ class UpdateItem(graphene.Mutation):
         ok = False
         item_instance = Item.objects.get(pk=id)
         user = User.objects.get(pk=input.user.id)
-        storage = Storage.objects.get(pk=input.storage.id)
 
         if item_instance:
             ok = True
@@ -83,18 +81,10 @@ class UpdateItem(graphene.Mutation):
                 item_instance.name = input.name
             if input.user:
                 item_instance.user = user
-            if input.storage:
-                item_instance.storage = storage
             if input.category:
                 item_instance.category = input.category
             if input.quantity:
                 item_instance.quantity = input.quantity
-            if input.storage:
-                item_instance.purchase_date = input.purchase_date
-            if input.storage:
-                item_instance.expiry_date = input.expiry_date
-            if input.storage:
-                item_instance.perishable = input.perishable
             item_instance.save()
             return UpdateItem(ok=ok, item=item_instance)
         return UpdateItem(ok=ok, item=None)
