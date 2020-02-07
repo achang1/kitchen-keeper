@@ -1,67 +1,50 @@
 import React, {Component, Fragment} from 'react';
-import API from '../utils/API';
+import {connect} from "react-redux";
+import { initializeHomePage } from '../actions';
 
 class HomePage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
-    async componentDidMount() {
-        let users = await API.post(
-            '/',
-            {
-                query: `
-                query {
-                    allUsers {
-                      id
-                      userName
-                      email
-                      firstName
-                      lastName
-                    }
-                  }
-                    `
-            });
-
-        console.log(users);
-    }
-
-    async fetchUsers() {
-        try {
-            let users = await API.post(
-                '/',
-                {
-                    query: `
-                    query  {
-                        allUsers{
-                          id
-                          userName
-                          email
-                          firstName
-                          lastName
-                        }
-                    }
-                        `
-                });
-
-            console.log(users);
-        } catch(e) {
-            console.log(e);
-        }
+    componentDidMount() {
+        this.props.onLoad();
     }
 
     render() {
         return (
             <Fragment>
-                <button
-                    onClick={() => this.fetchUsers()}>
-                    GET Users
-                </button>
+                <ul>
+                    {this.props.allUsers.map(user => {
+                        return (
+                            <li key={user.id}>
+                                {user.userName}
+                            </li>
+                        )
+                    })}
+                </ul>
+                <ul>
+                    {this.props.allStorages.map(storage => {
+                        return (
+                            <li key={storage.id}>
+                                {storage.storageType}
+                            </li>
+                        )
+                    })}
+                </ul>
             </Fragment>
         )
     }
 }
 
-export default HomePage;
+const mapStateToProps = state => {
+    console.log(state);
+    return {
+      allUsers: state.allUsers,
+      allStorages: state.allStorages
+    }
+};
+
+function mapDispatchToProps(dispatch) {
+    return {
+        onLoad: () => initializeHomePage(dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

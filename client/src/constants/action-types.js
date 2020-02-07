@@ -1,0 +1,1 @@
+export const INIT_HOMEPAGE = "INIT_HOMEPAGE";
